@@ -1,4 +1,4 @@
-# NF16 - Projet NOSQL (Redis) 🚀
+# NF16 - Projet NoSQL (Redis) 🚀
 
 Ce projet fournit une image Redis prête à l'emploi avec Docker, accompagnée d'une interface web (Redis Commander). ⚙️
 
