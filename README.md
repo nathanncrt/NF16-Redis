@@ -1,6 +1,6 @@
 # NF16 - Projet NoSQL (Redis) 🚀
 
-Ce projet fournit une image Redis prête à l'emploi avec Docker, accompagnée d'une interface web (Redis Commander). ⚙️
+Ce projet fournit une image Redis prête à l'emploi avec Docker ⚙️
 
 ## Installation / Configuration
 
@@ -10,7 +10,7 @@ Ce projet fournit une image Redis prête à l'emploi avec Docker, accompagnée d
 docker compose up -d
 ```
 
-### Arrêt des services 
+### Arrêt des services
 
 ```bash
 docker compose down
@@ -24,20 +24,15 @@ Vous pouvez exécuter des commandes classiques (GET, SET, KEYS, etc.) directemen
 docker exec -it redis redis-cli
 ```
 
-## Redis Commander (Web) 🌐
+## Visualisation des données
 
-Ouvrir dans un navigateur :
-<http://localhost:8081>
+Il existe différents outils Open-source qui permettentent de visualiser, manipuler des données ainsi qu'exécuter des commandes dans un serveur Redis.
 
-Redis Commander permet de visualiser les clés, éditer les valeurs et exécuter des commandes depuis une interface graphique.
+Par défaut sur ce projet, l'outil Redis Insight est configuré dans le fichier docker-compose.yaml
 
-## Auteur : Nathan NICART
+### Redis Insight🌐
 
-## Redis Insight (Web) 🌐
-
-Redis Insight propose une interface plus complète, pour utiliser **insight** à la place de **commander**
-
-docker-compose.yml :
+Remplacer le contenu du fichier docker-compose.yaml par celui ci-dessous
 
 ```bash
 services:
@@ -73,4 +68,45 @@ networks:
 
 Ouvrir dans le navigateur : <http://localhost:5540/>
 
-Puis cliquer sur "Add redis database" et ajouter l'URL : **redis://redis:6379** et confirmer
+Puis cliquer sur **Add redis database** et ajouter l'URL : **redis://redis:6379** et confirmer
+
+### Redis Commander (Web) 🌐
+
+Remplacer le contenu du fichier docker-compose.yaml par celui ci-dessous
+
+```bash
+services:
+  redis:
+    build:
+      context: .
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - redisNetwork
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
+    user: redis
+    networks:
+      - redisNetwork
+
+volumes:
+  redis_data:
+
+networks:
+  redisNetwork:
+```
+
+Ouvrir dans un navigateur : <http://localhost:8081>
+
+## Auteur : Nathan NICART
